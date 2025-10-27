@@ -4,6 +4,7 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .pdm-python
+.ipynb_checkpoints/*
 */.ipynb_checkpoints/*
 prelim_discovery_analysis/smor_parcel_dfs/*indiv*.pkl
 prelim_discovery_analysis/smor_parcel_dfs/*.nii
