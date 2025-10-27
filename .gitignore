@@ -6,4 +6,8 @@ __pycache__/
 .pdm-python
 */.ipynb_checkpoints/*
 prelim_discovery_analysis/smor_parcel_dfs/*indiv*.pkl
+prelim_discovery_analysis/smor_parcel_dfs/*.nii
+prelim_discovery_analysis/smor_parcel_dfs/*.tsv
+!prelim_discovery_analysis/smor_parcel_dfs/_averaged.pkl
 prelim_discovery_analysis/schafer400_dfs/*indiv*.pkl
+!prelim_discovery_analysis/schafer400_dfs/*_averaged.pkl
