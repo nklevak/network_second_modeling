@@ -27,9 +27,9 @@ BEHAVIORAL_BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/behavior
 
 # Relative to prelim_discovery_analysis directory
 OUTPUT_DIRS = {
-    'schafer': 'schafer400_dfs',
-    'smor': 'smor_parcel_dfs',
-    'smor_fixed': 'smor_parcel_dfs_fixed',
+    'schafer': 'processed_data_dfs/schafer400_dfs',
+    'smor': 'processed_data_dfs/smor_parcel_dfs',
+    'smor_fixed': 'processed_data_dfs/smor_parcel_dfs_fixed',
     'correlations': 'correlation_analysis_results',
     'neurosynth': 'neurosynth_rois',
     'second_level_models': '/home/users/nklevak/network_data_second_lev/'
