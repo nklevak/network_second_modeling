@@ -10,6 +10,10 @@ import numpy as np
 import nibabel as nib
 from pathlib import Path
 from collections import defaultdict
+import pandas as pd
+import pickle
+from sklearn.utils import Bunch
+from nilearn import datasets
 
 # ============================================================================
 # Study Configuration Constants
@@ -187,6 +191,12 @@ def clean_z_map_data(z_map, task, contrast_name, encounter):
         )
     return z_map
 
+def standardize_mask(mask_img, dtype=bool):
+    """Ensure mask has consistent data type and format"""
+    mask_data = mask_img.get_fdata()
+    # Convert to binary and specified dtype
+    binary_data = (mask_data > 0).astype(dtype)
+    return image.new_img_like(mask_img, binary_data)
 
 # ============================================================================
 # Memory Management
@@ -209,6 +219,97 @@ def cleanup_memory():
     )
 
 
+# ============================================================================
+# Atlas related things
+# ============================================================================
+def create_smor_atlas():
+    # 1. Load the Smorgasbord atlas
+    print("Loading Smorgasbord atlas...")
+    
+    # Load the NIfTI file
+    atlas_img = nib.load('processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/tpl-MNI152NLin2009cAsym_res-01_atlas-smorgasbord_dseg.nii')
+    
+    # Load the labels from TSV
+    labels_df = pd.read_csv('processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/tpl-MNI152NLin2009cAsym_res-01_atlas-smorgasbord_dseg.tsv', sep='\t')
+    
+    # Extract labels as a list
+    labels = labels_df['name'].tolist()
+    
+    # Create a Bunch object to make it the same format as Schaefer
+    smorgasbord_atlas = Bunch(
+        maps=atlas_img,
+        labels=labels,
+        description='Smorgasbord atlas from GitHub'
+    )
+    print("done!")
+
+    # Check the atlas data
+    atlas_data = smorgasbord_atlas.maps.get_fdata()
+    print(f"Atlas data shape: {atlas_data.shape}")
+    print(f"Unique ROI values: {len(np.unique(atlas_data))}")
+    print(f"ROI range: {atlas_data.min()} to {atlas_data.max()}")
+    
+    # Check if number of labels matches number of ROIs
+    unique_rois = np.unique(atlas_data)
+    print(f"\nNumber of unique ROIs (excluding 0/background): {len(unique_rois[unique_rois > 0])}")
+    print(f"Number of labels: {len(smorgasbord_atlas.labels)}")
+    
+    # Inspect first few labels
+    print(f"\nFirst 5 labels:")
+    for i in range(5):
+        print(f"  {i}: {smorgasbord_atlas.labels[i]}")
+
+    # Get actual ROI values
+    atlas_data = smorgasbord_atlas.maps.get_fdata()
+    roi_values = np.unique(atlas_data)
+    roi_values = roi_values[roi_values > 0]  # Remove background (0)
+    
+    print(f"ROI values range: {roi_values.min()} to {roi_values.max()}")
+    print(f"First 10 ROI values: {roi_values[:10]}")
+    print(f"Last 10 ROI values: {roi_values[-10:]}")
+    
+    # Create a mapping from ROI value to label
+    roi_to_label = dict(zip(roi_values, smorgasbord_atlas.labels))
+    
+    # Example: What label corresponds to ROI value 1?
+    print(f"\nROI value 1 -> {roi_to_label.get(1, 'Not found')}")
+    print(f"ROI value 606 -> {roi_to_label.get(606, 'Not found')}")
+
+    # Add the ROI-to-label mapping to atlas
+    smorgasbord_atlas.roi_values = roi_values
+    smorgasbord_atlas.roi_to_label = roi_to_label
+
+    # Save the entire Bunch object with all additions
+    with open('processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl', 'wb') as f:
+        pickle.dump(smorgasbord_atlas, f)
+
+    print("now saved as bunch object in processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl")
+
+def load_smor_atlas():
+    # get smorgasbord atlas
+    print("Loading Smorgasbord atlas...")
+    with open(f'processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl', 'rb') as f:
+        smorgasbord_atlas = pickle.load(f)
+        
+        if isinstance(smorgasbord_atlas.maps, str):
+            # Load the NIfTI image
+            smorgasbord_atlas.maps = nib.load(nifti_path)
+            
+    print(f"Atlas loaded with {len(smorgasbord_atlas.labels)} regions")
+    print(f"Atlas shape: {smorgasbord_atlas.maps.shape}")
+    return smorgasbord_atlas
+    
+def load_schaefer_atlas():
+    print("Loading Schaefer 400 atlas...")
+    schaefer_atlas = datasets.fetch_atlas_schaefer_2018(
+        n_rois=400, 
+        yeo_networks=7,  # 7 or 17 networks available
+        resolution_mm=2  # 1mm or 2mm resolution
+    )
+    print(f"Atlas loaded with {len(schaefer_atlas.labels)} regions")
+    print(f"Atlas shape: {nib.load(schaefer_atlas.maps).shape}")
+    return schaefer_atlas
+    
 # ============================================================================
 # Data Structure Utilities
 # ============================================================================
