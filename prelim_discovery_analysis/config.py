@@ -13,10 +13,11 @@ from pathlib import Path
 
 # Base directory for input data
 # Can be overridden with NETWORK_DATA_DIR environment variable
-BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/discovery_BIDS_20250402/derivatives/'
+# BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/discovery_BIDS_20250402/derivatives/' # this is the old base dir 
+BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/discovery_BIDS_20250402/derivatives/dataset-networkDiscovery_model-lev1_space-MNI_withinMaskThreshold-1.0_rtmodel-RTDur'
 
-# Processing level directory
-INPUT_LEVEL = 'output_lev1_mni'
+# # Processing level directory
+# INPUT_LEVEL = 'output_lev1_mni'
 
 # Behavioral data directory (if different from main data directory)
 BEHAVIORAL_BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/behavioral_data/qc/discovery/'
@@ -27,9 +28,9 @@ BEHAVIORAL_BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/behavior
 
 # Relative to prelim_discovery_analysis directory
 OUTPUT_DIRS = {
-    'schafer': 'processed_data_dfs/schafer400_dfs',
-    'smor': 'processed_data_dfs/smor_parcel_dfs',
-    'smor_fixed': 'processed_data_dfs/smor_parcel_dfs_fixed',
+    'schaefer': 'processed_data_dfs_updated_dec/schafer400_dfs',
+    'smor': 'processed_data_dfs_updated_dec/smor_parcel_dfs',
+    'smor_fixed': 'processed_data_dfs_updated_dec/smor_parcel_dfs_fixed',
     'correlations': 'correlation_analysis_results',
     'neurosynth': 'neurosynth_rois',
     'second_level_models': '/home/users/nklevak/network_data_second_lev/'
@@ -52,17 +53,21 @@ ATLAS_PATHS = {
 # Date strings used in output filenames
 # Update these when creating new output files
 OUTPUT_DATES = {
-    'schafer': '1001',
-    'smor': '1027',
-    'smor_fixed': '1116',
+    'schafer': '1208',
+    'smor': '1208',
+    'smor_fixed': '1208',
 }
 
 # File naming patterns
 FILE_PATTERNS = {
     'parcel_indiv_mean': 'discovery_parcel_indiv_mean_updated_{date}_{run_num}.pkl',
     'parcel_indiv_mean_averaged': 'discovery_parcel_indiv_mean_updated_{date}_averaged.pkl',
-    'parcel_fixedeffects_mean': 'discovery_parcel_fixedeffects_mean_updated_{date}_{run_num}.pkl',
-    'parcel_fixedeffects_indiv': 'discovery_parcel_fixedeffects_indiv_updated_{date}_{run_num}.pkl',
+    'parcel_fixedeffects_indiv': 'discovery_parcel_fixedeffects_indiv_updated_{date}.pkl',
+    'parcel_fixedeffects_mean': 'discovery_parcel_fixedeffects_mean_updated_{date}_averaged.pkl',
+    'parcel_indiv_mean_z': 'discovery_parcel_indiv_mean_updated_{date}_{run_num}_z-scored.pkl',
+    'parcel_indiv_mean_averaged_z': 'discovery_parcel_indiv_mean_updated_{date}_z-scored_averaged.pkl',
+    'parcel_fixedeffects_indiv_z': 'discovery_parcel_fixedeffects_indiv_updated_{date}_z-scored.pkl',
+    'parcel_fixedeffects_mean_z': 'discovery_parcel_fixedeffects_mean_updated_{date}_z-scored_averaged.pkl',
 }
 
 # ============================================================================

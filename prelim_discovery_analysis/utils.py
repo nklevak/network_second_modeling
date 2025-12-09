@@ -61,7 +61,8 @@ ENCOUNTERS = ['01', '02', '03', '04', '05']
 # ============================================================================
 
 # this is to get the firs tleve
-def build_first_level_contrast_map_path(base_dir, level, subject, session, task, contrast_name):
+# def build_first_level_contrast_map_path(base_dir, level, subject, session, task, contrast_name, file_type = "default"):
+def build_first_level_contrast_map_path(base_dir, subject, session, task, contrast_name, file_type = "default"):
     """Build the file path for a contrast map.
     
     Handles special cases for subjects with different file naming conventions:
@@ -82,33 +83,42 @@ def build_first_level_contrast_map_path(base_dir, level, subject, session, task,
         Task name (e.g., 'nBack')
     contrast_name : str
         Contrast name (e.g., 'twoBack-oneBack')
+    file_type : str
+        Data type (default is "default" which means beta, otherwise can do "z")
     
     Returns
     -------
     str
         Full path to the contrast map file
     """
+    file_ending = "effect-size"
+    if (file_type == "z"):
+        file_ending = "z_score"
+    
     filename = (
-        f'{subject}_{session}_task-{task}_contrast-{contrast_name}'
-        f'_rtmodel-rt_centered_stat-effect-size.nii.gz'
+        f'{subject}_{session}_task-{task}_run-1_contrast-{contrast_name}'
+        f'_rtmodel-RTDur_stat-{file_ending}.nii.gz'
     )
     
-    # Special case: sub-s10 in flanker task
-    if (subject == 'sub-s10' and task == 'flanker'):
-        filename = (
-            f'{subject}_{session}_run-1_task-{task}_contrast-{contrast_name}'
-            f'_rtmodel-rt_centered_stat-effect-size.nii.gz'
-        )
-    # Special case: sub-s03 in all tasks
-    elif (subject == 'sub-s03'):
-        filename = (
-            f'{subject}_{session}_run-1_task-{task}_contrast-{contrast_name}'
-            f'_rtmodel-rt_centered_stat-effect-size.nii.gz'
-        )
+    # # Special case: sub-s10 in flanker task
+    # if (subject == 'sub-s10' and task == 'flanker'):
+    #     filename = (
+    #         f'{subject}_{session}_run-1_task-{task}_contrast-{contrast_name}'
+    #         f'_rtmodel-rt_centered_stat-{file_ending}.nii.gz'
+    #     )
+    # # Special case: sub-s03 in all tasks
+    # elif (subject == 'sub-s03'):
+    #     filename = (
+    #         f'{subject}_{session}_run-1_task-{task}_contrast-{contrast_name}'
+    #         f'_rtmodel-rt_centered_stat-{file_ending}.nii.gz'
+    #     )
         
-    return os.path.join(base_dir, level, subject, task, 'indiv_contrasts', filename)
+    # return os.path.join(base_dir, level, subject, task, 'indiv_contrasts', filename)
+    full_task = f"task-{task}"
+    return os.path.join(base_dir, subject, full_task, 'indiv_contrasts', filename)
 
-def build_fixed_effects_path(base_dir, level, subject, task, contrast_name):
+# def build_fixed_effects_path(base_dir, level, subject, task, contrast_name, file_type = "default"):
+def build_fixed_effects_path(base_dir, subject, task, contrast_name, file_type = "default"):
     """Build the file path for a fixed effects map.
     
     Parameters
@@ -123,18 +133,25 @@ def build_fixed_effects_path(base_dir, level, subject, task, contrast_name):
         Task name (e.g., 'nBack')
     contrast_name : str
         Contrast name (e.g., 'twoBack-oneBack')
+    file_type : str
+        Data type (default is "default" which means beta, otherwise can do "z")
     
     Returns
     -------
     str
         Full path to the fixed effects map file
     """
+    file_ending = ""
+    if (file_type == "z"):
+        file_ending = "-z_score"
+        
     filename = (
         f'{subject}_task-{task}_contrast-{contrast_name}'
-        f'_rtmodel-rt_centered_stat-fixed-effects.nii.gz'
+        f'_rtmodel-RTDur_stat-fixed-effects{file_ending}.nii.gz'
     )
-    return os.path.join(base_dir, level, subject, task, 'fixed_effects', filename)
-
+    full_task = f"task-{task}"
+    # return os.path.join(base_dir, level, subject, task, 'fixed_effects', filename)
+    return os.path.join(base_dir, subject, full_task, 'fixed_effects', filename)
 
 # ============================================================================
 # Data Validation and Cleaning
