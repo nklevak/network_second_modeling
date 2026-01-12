@@ -29,8 +29,8 @@ BEHAVIORAL_BASE_DIR = '/oak/stanford/groups/russpold/data/network_grant/behavior
 # Relative to prelim_discovery_analysis directory
 OUTPUT_DIRS = {
     'schaefer': 'processed_data_dfs_updated_dec/schafer400_dfs',
-    'smor': 'processed_data_dfs_updated_dec/smor_parcel_dfs',
-    'smor_fixed': 'processed_data_dfs_updated_dec/smor_parcel_dfs_fixed',
+    'smor': 'processed_data_dfs_2026/smor_parcel_dfs',
+    'smor_fixed': 'processed_data_dfs_2026/smor_parcel_dfs_fixed',
     'correlations': 'correlation_analysis_results',
     'neurosynth': 'neurosynth_rois',
     'second_level_models': '/home/users/nklevak/network_data_second_lev/'
@@ -43,7 +43,7 @@ OUTPUT_DIRS = {
 # Paths to atlas files (relative to prelim_discovery_analysis directory)
 ATLAS_PATHS = {
     'schafer': None,  # Loaded via nilearn.datasets.fetch_atlas_schaefer_2018()
-    'smor': 'smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl',
+    'smor': 'smorgasbord_atlas_files/smorgasbord_atlas.pkl',
 }
 
 # ============================================================================
@@ -53,9 +53,9 @@ ATLAS_PATHS = {
 # Date strings used in output filenames
 # Update these when creating new output files
 OUTPUT_DATES = {
-    'schafer': '1208',
-    'smor': '1208',
-    'smor_fixed': '1208',
+    'schafer': '0111',
+    'smor': '0111',
+    'smor_fixed': '0111',
 }
 
 # File naming patterns

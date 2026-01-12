@@ -244,10 +244,10 @@ def create_smor_atlas():
     print("Loading Smorgasbord atlas...")
     
     # Load the NIfTI file
-    atlas_img = nib.load('processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/tpl-MNI152NLin2009cAsym_res-01_atlas-smorgasbord_dseg.nii')
+    atlas_img = nib.load('smorgasbord_atlas_files/tpl-MNI152NLin2009cAsym_res-01_atlas-smorgasbord_dseg.nii')
     
     # Load the labels from TSV
-    labels_df = pd.read_csv('processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/tpl-MNI152NLin2009cAsym_res-01_atlas-smorgasbord_dseg.tsv', sep='\t')
+    labels_df = pd.read_csv('smorgasbord_atlas_files/tpl-MNI152NLin2009cAsym_res-01_atlas-smorgasbord_dseg.tsv', sep='\t')
     
     # Extract labels as a list
     labels = labels_df['name'].tolist()
@@ -297,7 +297,7 @@ def create_smor_atlas():
     smorgasbord_atlas.roi_to_label = roi_to_label
 
     # Save the entire Bunch object with all additions
-    with open('processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl', 'wb') as f:
+    with open('smorgasbord_atlas_files/smorgasbord_atlas.pkl', 'wb') as f:
         pickle.dump(smorgasbord_atlas, f)
 
     print("now saved as bunch object in processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl")
@@ -305,7 +305,7 @@ def create_smor_atlas():
 def load_smor_atlas():
     # get smorgasbord atlas
     print("Loading Smorgasbord atlas...")
-    with open(f'processed_data_dfs/smor_parcel_dfs/smorgasbord_atlas_files/smorgasbord_atlas.pkl', 'rb') as f:
+    with open(f'smorgasbord_atlas_files/smorgasbord_atlas.pkl', 'rb') as f:
         smorgasbord_atlas = pickle.load(f)
         
         if isinstance(smorgasbord_atlas.maps, str):
