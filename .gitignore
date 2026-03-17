@@ -5,7 +5,9 @@ __pycache__/
 .ruff_cache/
 .pdm-python
 .ipynb_checkpoints/*
+.claude/*
 **/.ipynb_checkpoints/**
+.mcp.json
 prelim_discovery_analysis/processed_data_dfs/smor_parcel_dfs/*indiv*.pkl
 prelim_discovery_analysis/processed_data_dfs/smor_parcel_dfs/*.nii
 prelim_discovery_analysis/processed_data_dfs/smor_parcel_dfs/*.tsv
