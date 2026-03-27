@@ -23,7 +23,7 @@ from pathlib import Path
 from itertools import combinations
 from scipy.linalg import orthogonal_procrustes
 from scipy.stats import pearsonr
-from statsmodels.formula.api import mixedlm
+from scipy.stats import ttest_1samp, linregress
 from statsmodels.stats.multitest import multipletests
 from sklearn.svm import SVC
 from sklearn.model_selection import LeaveOneGroupOut, cross_val_score
@@ -247,106 +247,98 @@ def apply_rotations(parcel_dict: dict, rotations: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# STEP 4: LME per parcel — activation ~ encounter_c + (1+encounter_c|subject)
+# STEP 4: Two-stage practice effects per parcel
+#   Stage 1: per-subject OLS  activation ~ encounter_c  → slope per subject
+#   Stage 2: one-sample t-test across subjects (H0: mean slope = 0)
+#   FDR correction across 429 parcels per task/contrast
+#
+# This replaces LME. With N=5 subjects, LME variance-component estimation
+# is unreliable (boundary solutions, failed convergence). The two-stage
+# summary-statistics approach is the standard neuroimaging second-level
+# method (cf. SPM/FSL) and is equivalent to LME under balanced designs.
 # ---------------------------------------------------------------------------
 
-def run_lme_practice_effects(
+def run_practice_effects(
     aligned_data: dict,
     tasks_to_run=None,
 ) -> dict:
     """
-    For each task/contrast/parcel, fit:
-        activation ~ encounter_c + (1 | subject)
-
-    Random intercept only — random slopes omitted because N=5 subjects
-    provides insufficient data to reliably estimate the random-effects
-    covariance matrix.
-    Fixed slope = group-level practice effect.
-    FDR correction across 429 parcels per task/contrast.
+    For each task/contrast/parcel:
+        Stage 1 — fit OLS per subject: activation ~ encounter_c
+        Stage 2 — one-sample t-test on the 5 per-subject slopes vs 0
+        FDR-BH correction across 429 parcels.
 
     Returns:
         results[task][contrast] = DataFrame with columns:
-            parcel_idx, fixed_slope, fixed_slope_p, fdr_significant,
-            random_slope_variance, converged
+            parcel_idx, fixed_slope (mean slope), fixed_slope_p (t-test p),
+            t_stat, fdr_significant, n_subjects
     """
-    print("\n=== STEP 4: LME practice effects in aligned space ===")
+    print("\n=== STEP 4: Two-stage practice effects in aligned space ===")
 
     if tasks_to_run is None:
         tasks_to_run = TASKS
+
+    enc_centered = {enc: (i + 1) - ENCOUNTER_CENTER
+                    for i, enc in enumerate(ENCOUNTERS)}
 
     all_results = {}
     for task in tasks_to_run:
         all_results[task] = {}
         for contrast in CONTRASTS[task]:
 
-            # --- Build long-format DataFrame ---
-            rows = []
+            # Stage 1: per-subject OLS slope for each parcel
+            # subject_slopes[subj] = (N_PARCELS,) array of slopes
+            subject_slopes = {}
             for subj in SUBJECTS:
-                for enc_idx, enc in enumerate(ENCOUNTERS):
+                enc_vecs = []
+                enc_vals = []
+                for enc in ENCOUNTERS:
                     vec = aligned_data[subj][task][contrast].get(enc)
-                    if vec is None:
-                        continue
-                    enc_c = (enc_idx + 1) - ENCOUNTER_CENTER
-                    for parcel_idx in range(N_PARCELS):
-                        rows.append({
-                            "subject":     subj,
-                            "encounter_c": enc_c,
-                            "parcel_idx":  parcel_idx,
-                            "activation":  float(vec[parcel_idx]),
-                        })
+                    if vec is not None:
+                        enc_vecs.append(vec)           # (N_PARCELS,)
+                        enc_vals.append(enc_centered[enc])
 
-            if not rows:
-                print(f"  {task}/{contrast}: no data, skipping")
+                if len(enc_vecs) < 3:                  # need ≥3 points for OLS
+                    continue
+
+                X = np.array(enc_vals)                 # (n_enc,)
+                Y = np.array(enc_vecs)                 # (n_enc, N_PARCELS)
+                # Vectorised OLS: slope = cov(X,Y) / var(X)
+                X_c = X - X.mean()
+                slopes = (X_c @ Y) / (X_c @ X_c)      # (N_PARCELS,)
+                subject_slopes[subj] = slopes
+
+            n_subj = len(subject_slopes)
+            if n_subj < 2:
+                print(f"  {task}/{contrast}: insufficient subjects ({n_subj}), skipping")
                 continue
 
-            df_long = pd.DataFrame(rows)
-            n_obs   = len(df_long)
-            n_subj  = df_long["subject"].nunique()
-            print(f"\n  {task}/{contrast}: {n_obs} observations, {n_subj} subjects")
+            # Stage 2: one-sample t-test across subjects per parcel
+            slopes_matrix = np.stack(list(subject_slopes.values()))  # (n_subj, N_PARCELS)
+            t_stats, p_vals = ttest_1samp(slopes_matrix, popmean=0, axis=0)
+            mean_slopes = slopes_matrix.mean(axis=0)
 
-            # --- Fit LME per parcel ---
-            parcel_slopes, parcel_p, ran_var, converged = [], [], [], []
-
-            for parcel_idx in range(N_PARCELS):
-                pdf = df_long[df_long["parcel_idx"] == parcel_idx].copy()
-                try:
-                    md = mixedlm(
-                        "activation ~ encounter_c",
-                        pdf,
-                        groups=pdf["subject"],
-                    ).fit(reml=False, disp=False)
-
-                    parcel_slopes.append(md.fe_params["encounter_c"])
-                    parcel_p.append(md.pvalues["encounter_c"])
-                    ran_var.append(float(md.cov_re.iloc[0, 0]) if md.cov_re is not None else np.nan)
-                    converged.append(md.converged)
-
-                except Exception:
-                    parcel_slopes.append(np.nan)
-                    parcel_p.append(np.nan)
-                    ran_var.append(np.nan)
-                    converged.append(False)
-
-            parcel_p_arr = np.array(parcel_p)
-            valid = ~np.isnan(parcel_p_arr)
+            # FDR correction — first return value of multipletests is the reject array
+            valid = ~np.isnan(p_vals)
             fdr_sig = np.zeros(N_PARCELS, dtype=bool)
             if valid.sum() > 0:
-                _, fdr_sig[valid], _, _ = multipletests(
-                    parcel_p_arr[valid], alpha=0.05, method="fdr_bh"
+                reject, _, _, _ = multipletests(
+                    p_vals[valid], alpha=0.05, method="fdr_bh"
                 )
+                fdr_sig[valid] = reject
 
             res_df = pd.DataFrame({
-                "parcel_idx":            np.arange(N_PARCELS),
-                "fixed_slope":           parcel_slopes,
-                "fixed_slope_p":         parcel_p,
-                "fdr_significant":       fdr_sig,
-                "random_slope_variance": ran_var,
-                "converged":             converged,
+                "parcel_idx":      np.arange(N_PARCELS),
+                "fixed_slope":     mean_slopes,        # same name → plots unchanged
+                "fixed_slope_p":   p_vals,
+                "t_stat":          t_stats,
+                "fdr_significant": fdr_sig,
+                "n_subjects":      n_subj,
             })
 
             n_sig = fdr_sig.sum()
-            print(f"    Significant parcels (FDR q<0.05): {n_sig} / {N_PARCELS} "
-                  f"({100*n_sig/N_PARCELS:.1f}%)")
+            print(f"  {task}/{contrast}: {n_subj} subjects, "
+                  f"{n_sig}/{N_PARCELS} FDR-sig parcels ({100*n_sig/N_PARCELS:.1f}%)")
 
             all_results[task][contrast] = res_df
 
@@ -508,20 +500,13 @@ if __name__ == "__main__":
         pickle.dump(aligned_data, f)
     print(f"  Aligned session data saved → {aligned_path}")
 
-    # --- Step 4: LME ---
-    lme_results = run_lme_practice_effects(aligned_data)
+    # --- Step 4: Two-stage practice effects ---
+    lme_results = run_practice_effects(aligned_data)
 
     lme_path = OUTPUT_DIR / "lme_results_aligned.pkl"
     with open(lme_path, "wb") as f:
         pickle.dump(lme_results, f)
-    print(f"\n  LME results saved → {lme_path}")
-
-    # Summary: which task/contrast has the most significant parcels?
-    print("\n  Significant parcels per task/contrast (FDR q<0.05):")
-    for task in lme_results:
-        for contrast, df_res in lme_results[task].items():
-            n_sig = df_res["fdr_significant"].sum()
-            print(f"    {task}/{contrast}: {n_sig} / {N_PARCELS}")
+    print(f"\n  Practice effect results saved → {lme_path}")
 
     # --- Step 5a: ISC ---
     raw_data    = build_raw_data_dict(parcel_dict)
