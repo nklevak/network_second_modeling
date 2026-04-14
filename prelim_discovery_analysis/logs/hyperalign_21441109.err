@@ -1,0 +1,71 @@
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 3.2.1'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Downloading https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-02_desc-brain_mask.nii.gz
+  0%|          | 0.00/29.6k [00:00<?, ?B/s]100%|██████████| 29.6k/29.6k [00:00<00:00, 450kB/s]
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/.venv/lib/python3.9/site-packages/fmralign/embeddings/parcellation.py:82: UserWarning: Overriding provided-default estimator parameters with provided masker parameters :
+Parameter mask_strategy :
+    Masker parameter background - overriding estimator parameter epi
+Parameter smoothing_fwhm :
+    Masker parameter None - overriding estimator parameter 4.0
+
+  parcellation.fit(images_to_parcel)
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/.venv/lib/python3.9/site-packages/fmralign/alignment/utils.py:211: UserWarning: 
+ Some parcels are more than 1000 voxels wide it can slow down alignment,especially optimal_transport :
+ parcel 1 : 2927 voxels
+ parcel 2 : 3278 voxels
+ parcel 5 : 1409 voxels
+ parcel 6 : 16332 voxels
+ parcel 7 : 3485 voxels
+ parcel 8 : 3463 voxels
+ parcel 9 : 1749 voxels
+ parcel 10 : 53435 voxels
+ parcel 12 : 4263 voxels
+ parcel 13 : 1610 voxels
+ parcel 16 : 8011 voxels
+ parcel 17 : 2473 voxels
+ parcel 19 : 1438 voxels
+ parcel 20 : 3899 voxels
+ parcel 21 : 1642 voxels
+ parcel 22 : 1204 voxels
+ parcel 23 : 7308 voxels
+ parcel 24 : 2762 voxels
+ parcel 25 : 1388 voxels
+ parcel 26 : 3596 voxels
+ parcel 29 : 1707 voxels
+ parcel 30 : 1994 voxels
+ parcel 31 : 4313 voxels
+ parcel 32 : 3133 voxels
+ parcel 33 : 4723 voxels
+ parcel 34 : 1087 voxels
+ parcel 35 : 1059 voxels
+ parcel 39 : 2041 voxels
+ parcel 41 : 3924 voxels
+ parcel 43 : 1928 voxels
+ parcel 44 : 1107 voxels
+ parcel 47 : 4364 voxels
+ parcel 51 : 3928 voxels
+ parcel 52 : 2424 voxels
+ parcel 53 : 7583 voxels
+ parcel 58 : 6618 voxels
+ parcel 59 : 1265 voxels
+ parcel 60 : 1097 voxels
+ parcel 61 : 2531 voxels
+ parcel 67 : 2085 voxels
+ parcel 70 : 2523 voxels
+ parcel 71 : 1720 voxels
+ parcel 73 : 1351 voxels
+ parcel 79 : 1042 voxels
+ parcel 83 : 1052 voxels
+ parcel 91 : 1666 voxels
+ parcel 95 : 4578 voxels
+ parcel 97 : 1629 voxels
+ parcel 103 : 3965 voxels
+ parcel 107 : 1881 voxels
+ parcel 117 : 4507 voxels
+ parcel 123 : 2357 voxels
+ parcel 135 : 1417 voxels
+ parcel 141 : 1620 voxels
+ parcel 150 : 1468 voxels
+  warnings.warn(warning)
+/var/spool/slurmd/job21441109/slurm_script: line 13: 250742 Killed                  /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/.venv/bin/python 20_hyperalignment_run.py
+[2026-04-13T17:18:15.572] error: Detected 1 oom_kill event in StepId=21441109.batch. Some of the step tasks have been OOM Killed.
