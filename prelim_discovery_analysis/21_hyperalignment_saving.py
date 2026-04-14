@@ -15,7 +15,7 @@ from pathlib import Path
 from itertools import combinations
 from collections import defaultdict
 from nilearn.maskers import NiftiMasker
-from nilearn.image import concat_imgs
+from nilearn.image import concat_imgs, math_img
 from templateflow import api
 sys.path.insert(0, str(Path(__file__).parent))
 from utils import (
@@ -72,8 +72,8 @@ print(f"Saved shared_tce_sorted ({len(shared_tce_sorted)} tuples)")
 
 # ─── 3. Set up masker ────────────────────────────────────────────────────────
 print("Setting up masker...")
-brain_mask = api.get('MNI152NLin2009cAsym', desc='brain', suffix='mask', resolution=2)
-masker = NiftiMasker(mask_img=brain_mask).fit()
+gm_prob = api.get('MNI152NLin2009cAsym', label='GM', suffix='probseg', resolution=2)
+masker = NiftiMasker(mask_img=math_img("gm > 0.2", gm=gm_prob)).fit()
 
 # ─── 4. Build masked arrays for all subjects (one at a time) ─────────────────
 print("Masking subjects...")

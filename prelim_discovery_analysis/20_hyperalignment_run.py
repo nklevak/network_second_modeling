@@ -17,9 +17,10 @@ from sklearn.svm import SVC
 from sklearn.model_selection import LeaveOneGroupOut, cross_val_score
 from sklearn.preprocessing import LabelEncoder
 from nilearn.maskers import NiftiMasker
-from nilearn.image import concat_imgs
+from nilearn.image import concat_imgs, math_img
 from nilearn import plotting
 from templateflow import api
+import joblib
 from fmralign import GroupAlignment, PairwiseAlignment
 from fmralign.embeddings.parcellation import get_labels
 from fmralign.metrics import score_voxelwise
@@ -210,9 +211,9 @@ if __name__ == "__main__":
         subject_imgs[subj] = concat_imgs(imgs)
     del beta_maps
 
-    # Set up brain mask and masker
-    brain_mask = api.get('MNI152NLin2009cAsym', desc='brain', suffix='mask', resolution=2)
-    masker = NiftiMasker(mask_img=brain_mask).fit()
+    # Set up gray matter mask and masker (GM prob > 0.2 implicitly excludes non-brain voxels)
+    gm_prob = api.get('MNI152NLin2009cAsym', label='GM', suffix='probseg', resolution=2)
+    masker = NiftiMasker(mask_img=math_img("gm > 0.2", gm=gm_prob)).fit()
 
     # Split into training subjects and left-out subject (SUBJECTS[-1])
     train_subjects = SUBJECTS[:-1]
@@ -277,7 +278,6 @@ if __name__ == "__main__":
     print(f"Saved plots to {SAVE_DIR}")
 
     # Save alignment estimators and template
-    import joblib
     joblib.dump(template_estim, SAVE_DIR / "group_alignment.pkl")
     joblib.dump(pairwise_estim, SAVE_DIR / "pairwise_alignment.pkl")
     np.save(SAVE_DIR / "procrustes_template.npy", procrustes_template)

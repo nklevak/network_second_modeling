@@ -1,0 +1,32 @@
+Loading beta maps...
+Shared tuples: 159
+Saved shared_tce_sorted (159 tuples)
+Setting up masker...
+Masking subjects...
+  sub-s03: (159, 179354)
+  sub-s10: (159, 179354)
+  sub-s19: (159, 179354)
+  sub-s29: (159, 179354)
+  sub-s43: (159, 179354)
+Saved masked arrays to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/hyperalignment_fmralign_results/discovery_sample/ward_500pieces/saved_arrays
+Loading alignment estimators...
+Transforming subjects...
+Saved aligned arrays to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/hyperalignment_fmralign_results/discovery_sample/ward_500pieces/saved_arrays
+
+Computing ISC over 10 pairs...
+  sub-s03 x sub-s10: mean r before=0.126  after=0.582
+  sub-s03 x sub-s19: mean r before=0.165  after=0.570
+  sub-s03 x sub-s29: mean r before=0.233  after=0.616
+  sub-s03 x sub-s43: mean r before=0.143  after=0.584
+  sub-s10 x sub-s19: mean r before=0.071  after=0.558
+  sub-s10 x sub-s29: mean r before=0.165  after=0.591
+  sub-s10 x sub-s43: mean r before=0.108  after=0.610
+  sub-s19 x sub-s29: mean r before=0.154  after=0.571
+  sub-s19 x sub-s43: mean r before=0.084  after=0.545
+  sub-s29 x sub-s43: mean r before=0.154  after=0.593
+
+Overall mean ISC before: 0.1403
+Overall mean ISC after:  0.5820
+Saved ISC arrays and NIfTIs to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/hyperalignment_fmralign_results/discovery_sample/ward_500pieces/saved_arrays
+
+Done.

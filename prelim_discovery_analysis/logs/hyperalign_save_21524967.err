@@ -1,0 +1,4 @@
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 3.2.1'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Downloading https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-02_label-GM_probseg.nii.gz
+  0%|          | 0.00/1.04M [00:00<?, ?B/s]  7%|▋         | 71.7k/1.04M [00:00<00:01, 573kB/s] 37%|███▋      | 384k/1.04M [00:00<00:00, 1.68MB/s]100%|██████████| 1.04M/1.04M [00:00<00:00, 3.22MB/s]
