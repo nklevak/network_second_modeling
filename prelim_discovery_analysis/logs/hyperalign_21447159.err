@@ -72,3 +72,9 @@ Parameter smoothing_fwhm :
  parcel 484 : 1252 voxels
  parcel 495 : 1082 voxels
   warnings.warn(warning)
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/.venv/lib/python3.9/site-packages/fmralign/metrics.py:62: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  pearsonr(X_gt[:, vox], X_pred[:, vox])[
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/20_hyperalignment_run.py:266: UserWarning: Non-finite values detected. These values will be replaced with zeros.
+  baseline_display = plotting.plot_stat_map(
+/oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/20_hyperalignment_run.py:272: UserWarning: Non-finite values detected. These values will be replaced with zeros.
+  display = plotting.plot_stat_map(

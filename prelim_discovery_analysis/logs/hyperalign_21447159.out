@@ -209,3 +209,6 @@
   sub-s29 | spatialTS | response_time: 5 encounters
   sub-s43 | spatialTS | response_time: 5 encounters
 Shared (task, contrast, encounter) tuples across all subjects: 159
+Saved score NIfTIs to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/hyperalignment_fmralign_results/discovery_sample/ward_500pieces
+Saved plots to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/hyperalignment_fmralign_results/discovery_sample/ward_500pieces
+Saved alignment estimators to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/prelim_discovery_analysis/hyperalignment_fmralign_results/discovery_sample/ward_500pieces
