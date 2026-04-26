@@ -18,3 +18,12 @@ prelim_discovery_analysis/processed_data_dfs/schafer400_dfs/*indiv*.pkl
 !prelim_discovery_analysis/processed_data_dfs/schafer400_dfs/*_averaged.pkl
 prelim_discovery_analysis/**/*.pkl
 prelim_discovery_analysis/**/*.nii.gz
+prelim_discovery_analysis/**/**/*.pkl
+prelim_discovery_analysis/**/**/*.pkl
+prelim_discovery_analysis/**/**/*.pkl
+*.pkl
+*.nii.gz
+*/.venv
+.venv
+*.npy
+pot
