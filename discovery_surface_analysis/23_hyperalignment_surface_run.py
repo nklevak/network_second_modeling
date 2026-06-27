@@ -110,10 +110,10 @@ def build_schaefer400_surface_labels() -> np.ndarray:
     fsavg6   = fetch_surf_fsaverage('fsaverage6')
 
     lh_labels = vol_to_surf(
-        schaefer.maps, fsavg6.pial_left,  interpolation='nearest', radius=0
+        schaefer.maps, fsavg6.pial_left,  interpolation='nearest_most_frequent', radius=0
     ).astype(int)
     rh_labels = vol_to_surf(
-        schaefer.maps, fsavg6.pial_right, interpolation='nearest', radius=0
+        schaefer.maps, fsavg6.pial_right, interpolation='nearest_most_frequent', radius=0
     ).astype(int)
 
     labels = np.concatenate([lh_labels, rh_labels])

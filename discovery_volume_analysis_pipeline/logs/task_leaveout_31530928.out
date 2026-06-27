@@ -1,0 +1,193 @@
+Job started: Fri Jun 26 12:48:17 PDT 2026
+Node: sh02-06n04
+============================================================
+Loading all contrast maps...
+============================================================
+Reference image: /oak/stanford/groups/russpold/data/network_grant/discovery_BIDS_20250402/derivatives/archive/dataset-networkDiscovery_model-lev1_space-MNI_withinMaskThreshold-1.0_rtmodel-RTDur/sub-s03/task-nBack/indiv_contrasts/sub-s03_ses-02_task-nBack_run-1_contrast-twoBack-oneBack_rtmodel-RTDur_stat-effect-size.nii.gz
+
+Setting up Schaefer 400 masker...
+[fetch_atlas_schaefer_2018] Dataset found in 
+/home/users/nklevak/nilearn_data/schaefer_2018
+[fetch_atlas_schaefer_2018] Downloading data from 
+https://raw.githubusercontent.com/ThomasYeoLab/CBIG/v0.14.3-Update_Yeo2011_Schae
+fer2018_labelname/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Pa
+rcellations/MNI/Schaefer2018_400Parcels_7Networks_order_FSLMNI152_2mm.nii.gz ...
+[fetch_atlas_schaefer_2018]  ...done. (0 seconds, 0 min)
+
+Masker: 132032 voxels | 400 Schaefer-400 parcels (avg 330 voxels/parcel)
+
+Loading and masking all contrast maps...
+  Loaded: nBack
+  Loaded: flanker
+  Loaded: directedForgetting
+  Loaded: goNogo
+  Loaded: shapeMatching
+  Loaded: stopSignal
+  Loaded: cuedTS
+  Loaded: spatialTS
+Total maps loaded: 849
+
+============================================================
+Held-out task: nBack
+============================================================
+  Training tuples (shared across all subjects): 144
+    sub-s03: training shape (144, 132032)
+    sub-s10: training shape (144, 132032)
+    sub-s19: training shape (144, 132032)
+    sub-s29: training shape (144, 132032)
+    sub-s43: training shape (144, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 15
+    sub-s03: held-out shape (15, 132032)
+    sub-s10: held-out shape (15, 132032)
+    sub-s19: held-out shape (15, 132032)
+    sub-s29: held-out shape (15, 132032)
+    sub-s43: held-out shape (15, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/nBack
+
+============================================================
+Held-out task: flanker
+============================================================
+  Training tuples (shared across all subjects): 149
+    sub-s03: training shape (149, 132032)
+    sub-s10: training shape (149, 132032)
+    sub-s19: training shape (149, 132032)
+    sub-s29: training shape (149, 132032)
+    sub-s43: training shape (149, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 10
+    sub-s03: held-out shape (10, 132032)
+    sub-s10: held-out shape (10, 132032)
+    sub-s19: held-out shape (10, 132032)
+    sub-s29: held-out shape (10, 132032)
+    sub-s43: held-out shape (10, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/flanker
+
+============================================================
+Held-out task: directedForgetting
+============================================================
+  Training tuples (shared across all subjects): 149
+    sub-s03: training shape (149, 132032)
+    sub-s10: training shape (149, 132032)
+    sub-s19: training shape (149, 132032)
+    sub-s29: training shape (149, 132032)
+    sub-s43: training shape (149, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 10
+    sub-s03: held-out shape (10, 132032)
+    sub-s10: held-out shape (10, 132032)
+    sub-s19: held-out shape (10, 132032)
+    sub-s29: held-out shape (10, 132032)
+    sub-s43: held-out shape (10, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/directedForgetting
+
+============================================================
+Held-out task: goNogo
+============================================================
+  Training tuples (shared across all subjects): 147
+    sub-s03: training shape (147, 132032)
+    sub-s10: training shape (147, 132032)
+    sub-s19: training shape (147, 132032)
+    sub-s29: training shape (147, 132032)
+    sub-s43: training shape (147, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 12
+    sub-s03: held-out shape (12, 132032)
+    sub-s10: held-out shape (12, 132032)
+    sub-s19: held-out shape (12, 132032)
+    sub-s29: held-out shape (12, 132032)
+    sub-s43: held-out shape (12, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/goNogo
+
+============================================================
+Held-out task: shapeMatching
+============================================================
+  Training tuples (shared across all subjects): 123
+    sub-s03: training shape (123, 132032)
+    sub-s10: training shape (123, 132032)
+    sub-s19: training shape (123, 132032)
+    sub-s29: training shape (123, 132032)
+    sub-s43: training shape (123, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 36
+    sub-s03: held-out shape (36, 132032)
+    sub-s10: held-out shape (36, 132032)
+    sub-s19: held-out shape (36, 132032)
+    sub-s29: held-out shape (36, 132032)
+    sub-s43: held-out shape (36, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/shapeMatching
+
+============================================================
+Held-out task: stopSignal
+============================================================
+  Training tuples (shared across all subjects): 119
+    sub-s03: training shape (119, 132032)
+    sub-s10: training shape (119, 132032)
+    sub-s19: training shape (119, 132032)
+    sub-s29: training shape (119, 132032)
+    sub-s43: training shape (119, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 40
+    sub-s03: held-out shape (40, 132032)
+    sub-s10: held-out shape (40, 132032)
+    sub-s19: held-out shape (40, 132032)
+    sub-s29: held-out shape (40, 132032)
+    sub-s43: held-out shape (40, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/stopSignal
+
+============================================================
+Held-out task: cuedTS
+============================================================
+  Training tuples (shared across all subjects): 143
+    sub-s03: training shape (143, 132032)
+    sub-s10: training shape (143, 132032)
+    sub-s19: training shape (143, 132032)
+    sub-s29: training shape (143, 132032)
+    sub-s43: training shape (143, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 16
+    sub-s03: held-out shape (16, 132032)
+    sub-s10: held-out shape (16, 132032)
+    sub-s19: held-out shape (16, 132032)
+    sub-s29: held-out shape (16, 132032)
+    sub-s43: held-out shape (16, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/cuedTS
+
+============================================================
+Held-out task: spatialTS
+============================================================
+  Training tuples (shared across all subjects): 139
+    sub-s03: training shape (139, 132032)
+    sub-s10: training shape (139, 132032)
+    sub-s19: training shape (139, 132032)
+    sub-s29: training shape (139, 132032)
+    sub-s43: training shape (139, 132032)
+  Fitting GroupAlignment (iterative Procrustes)...
+  Fit complete.
+  Held-out task tuples (shared across all subjects): 20
+    sub-s03: held-out shape (20, 132032)
+    sub-s10: held-out shape (20, 132032)
+    sub-s19: held-out shape (20, 132032)
+    sub-s29: held-out shape (20, 132032)
+    sub-s43: held-out shape (20, 132032)
+  Transforming held-out arrays...
+  Saved to /oak/stanford/groups/russpold/users/nklevak/network_second_modeling/discovery_volume_analysis_pipeline/results/task_leaveout/spatialTS
+
+============================================================
+Task leave-out alignment complete.
+============================================================
+Job finished: Fri Jun 26 15:14:04 PDT 2026

@@ -32,7 +32,13 @@ RT_CONTRAST      = "response_time"
 train_subjects   = SUBJECTS[:-1]
 left_out_subject = SUBJECTS[-1]
 
-# ─── 1. Load beta maps ────────────────────────────────────────────────────────
+# ─── 1. Load shared_tce_sorted from run script ───────────────────────────────
+print("Loading shared_tce_sorted from run script output...")
+with open(ALIGN_DIR / "shared_tce_sorted.pkl", "rb") as f:
+    shared_tce_sorted = pickle.load(f)
+print(f"Shared tuples: {len(shared_tce_sorted)}")
+
+# ─── 2. Load beta maps ────────────────────────────────────────────────────────
 print("Loading beta maps...")
 beta_maps = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
 for task in TASKS:
@@ -45,27 +51,6 @@ for task in TASKS:
                     enc_key = f"{enc_count + 1:02d}"
                     beta_maps[task][contrast][subject][enc_key] = nib.load(path)
                     enc_count += 1
-
-# ─── 2. Find shared (task, contrast, encounter) tuples ───────────────────────
-task_order = {t: i for i, t in enumerate(TASKS)}
-available = {subj: set() for subj in SUBJECTS}
-for subj in SUBJECTS:
-    for task in TASKS:
-        for contrast in CONTRASTS[task]:
-            if contrast == RT_CONTRAST:
-                continue
-            for enc_key in beta_maps[task][contrast].get(subj, {}):
-                available[subj].add((task, contrast, enc_key))
-
-shared_tce = set.intersection(*available.values())
-shared_tce_sorted = sorted(
-    shared_tce,
-    key=lambda tce: (task_order[tce[0]], CONTRASTS[tce[0]].index(tce[1]), tce[2])
-)
-print(f"Shared tuples: {len(shared_tce_sorted)}")
-
-with open(SAVE_DIR / "shared_tce_sorted.pkl", "wb") as f:
-    pickle.dump(shared_tce_sorted, f)
 
 # ─── 3. Set up masker from smorgasbord atlas footprint ───────────────────────
 print("Setting up masker...")
@@ -141,8 +126,10 @@ isc_after_mean  = np.mean(isc_after_pairs,  axis=0)
 print(f"\nOverall mean ISC before: {isc_before_mean.mean():.4f}")
 print(f"Overall mean ISC after:  {isc_after_mean.mean():.4f}")
 
+isc_diff = isc_after_mean - isc_before_mean
 np.save(SAVE_DIR / "isc_before_mean.npy",  isc_before_mean)
 np.save(SAVE_DIR / "isc_after_mean.npy",   isc_after_mean)
+np.save(SAVE_DIR / "isc_diff.npy",         isc_diff)
 np.save(SAVE_DIR / "isc_before_pairs.npy", np.array(isc_before_pairs))
 np.save(SAVE_DIR / "isc_after_pairs.npy",  np.array(isc_after_pairs))
 with open(SAVE_DIR / "pair_labels.pkl", "wb") as f:
@@ -150,7 +137,7 @@ with open(SAVE_DIR / "pair_labels.pkl", "wb") as f:
 
 masker.inverse_transform(isc_before_mean).to_filename(SAVE_DIR / "isc_before_mean.nii.gz")
 masker.inverse_transform(isc_after_mean).to_filename(SAVE_DIR / "isc_after_mean.nii.gz")
-masker.inverse_transform(isc_after_mean - isc_before_mean).to_filename(SAVE_DIR / "isc_diff.nii.gz")
+masker.inverse_transform(isc_diff).to_filename(SAVE_DIR / "isc_diff.nii.gz")
 print(f"Saved ISC arrays and NIfTIs to {SAVE_DIR}")
 
 print("\nDone.")

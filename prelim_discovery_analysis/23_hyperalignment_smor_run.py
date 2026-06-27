@@ -3,6 +3,7 @@
 # instead of Ward parcellation for alignment chunks
 import os
 import sys
+import pickle
 import numpy as np
 import nibabel as nib
 from pathlib import Path
@@ -100,6 +101,11 @@ if __name__ == "__main__":
         key=lambda tce: (task_order[tce[0]], CONTRASTS[tce[0]].index(tce[1]), tce[2])
     )
     print(f"Shared (task, contrast, encounter) tuples across all subjects: {len(shared_tce_sorted)}")
+
+    SAVE_DIR = OUTPUT_DIR / "smorgasbord_parcels"
+    SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    with open(SAVE_DIR / "shared_tce_sorted.pkl", "wb") as f:
+        pickle.dump(shared_tce_sorted, f)
 
     # ── 3. Build per-subject 4D images ───────────────────────────────────
     subject_imgs = {}
